@@ -25,7 +25,7 @@
 
         #sidebar {
             position: fixed;
-            top: 0; left: 0; bottom: 0;
+            top: 38px; left: 0; bottom: 0;
             width: var(--sidebar-w);
             background: var(--bg2);
             border-right: 1px solid rgba(255,255,255,0.06);
@@ -199,7 +199,7 @@
         canvas#canvas {
             display: block;
             position: fixed;
-            top: 0;
+            top: 38px;
             left: var(--sidebar-w);
             cursor: default;
         }
@@ -240,7 +240,7 @@
         /* â”€â”€ Loading overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
         #loading {
             position: fixed;
-            top: 0; left: var(--sidebar-w); right: 0; bottom: 0;
+            top: 38px; left: var(--sidebar-w); right: 0; bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -284,6 +284,16 @@
     <div class="view-toggle">
         <button class="active" onclick="setView('treemap')">Treemap</button>
         <button onclick="setView('columns')">Exposure vs Outlook</button>
+    </div>
+
+
+    <!-- Color mode -->
+    <div class="stat-section">
+        <h3>Color by</h3>
+        <div class="color-mode-toggle">
+            <button id="btnColorExposure" class="active" onclick="setColorMode('exposure')">AI Exposure</button>
+            <button id="btnColorTimeline" onclick="setColorMode('timeline')">Timeline</button>
+        </div>
     </div>
 
     <!-- Stats -->
@@ -336,16 +346,72 @@
         <span>High</span>
     </div>
 
+
+    <div class="stat-section">
+        <h3>When 80% won&#8217;t need humans</h3>
+        <div class="stat-big" id="stat80Pct" style="font-size:22px">&mdash;</div>
+        <div class="stat-label" id="stat80Range"></div>
+        <div class="stat-label" style="margin-top:4px;font-size:10px;opacity:0.7;line-height:1.4">
+            Employment-weighted estimate. Based on when 80% of current US jobs fall in categories
+            where the research consensus midpoint has passed.
+        </div>
+    </div>
+
     <!-- Credit -->
     <div class="credit">
         <strong>Original visualization</strong><br>
-        <a href="https://mariodian.github.io/jobs/" target="_blank">mariodian.github.io/jobs</a><br>
         <a href="https://github.com/karpathy/jobs" target="_blank">github.com/karpathy/jobs</a><br><br>
-        The <em>"With robots"</em> mode is a custom scenario layer: it raises exposure for
-        physically-demanding occupations on the assumption that dexterous robots could
-        perform those tasks as well as humans. It is not part of the original karpathy/jobs
-        project and makes no claim about actual future outcomes.
+        The <em>"With robots"</em> and <em>"Timeline"</em> modes are custom scenario layers
+        not part of the original project. Timelines are synthesised from the research sources
+        listed above and make no claim about actual future outcomes.
     </div>
+</div>
+
+<div id="sources-banner">
+    <strong>Sources:</strong>
+    <a href="https://www.oxfordmartin.ox.ac.uk/downloads/academic/future-of-employment.pdf" target="_blank">Frey &amp; Osborne 2013</a>
+    <a href="https://www.mckinsey.com/mgi/our-research/future-of-work" target="_blank">McKinsey 2017/2023</a>
+    <a href="https://arxiv.org/abs/2303.10130" target="_blank">Eloundou et al. 2023</a>
+    <a href="https://www.imf.org/en/Publications/Staff-Discussion-Notes/Issues/2024/01/14/Gen-AI-Artificial-Intelligence-and-the-Future-of-Work-542379" target="_blank">IMF 2024</a>
+    <a href="https://www.weforum.org/reports/the-future-of-jobs-report-2023/" target="_blank">WEF 2023</a>
+    <a href="https://www.nber.org/papers/w28467" target="_blank">Acemoglu &amp; Restrepo 2022</a>
+    <a href="https://ark-invest.com/big-ideas-2024/" target="_blank">ARK Invest 2024</a>
+    <button class="src-toggle" onclick="toggleSources()">Details &#9660;</button>
+</div>
+<div id="sources-detail">
+    <ol>
+        <li><strong>Frey &amp; Osborne (2013)</strong> &mdash; <em>The Future of Employment</em>. Oxford.
+            Task-based risk across 702 occupations; ~47% US jobs at high automation risk.
+            <a href="https://www.oxfordmartin.ox.ac.uk/downloads/academic/future-of-employment.pdf" target="_blank">PDF</a></li>
+        <li><strong>McKinsey Global Institute (2017, 2023)</strong> &mdash; <em>Jobs Lost, Jobs Gained</em> / <em>The Future of Work After COVID-19</em>.
+            Activity-level automation potential; 400&ndash;800M global jobs by 2030.
+            <a href="https://www.mckinsey.com/mgi/our-research/future-of-work" target="_blank">mckinsey.com</a></li>
+        <li><strong>Goldman Sachs (2023)</strong> &mdash; Briggs &amp; Kodnani, <em>The Potentially Large Effects of AI on Economic Growth</em>.
+            ~300M full-time equivalent jobs automatable; legal, admin, office most exposed.
+            <a href="https://www.gspublishing.com/content/research/en/reports/2023/03/27/d64e052b-0f6e-45d7-967b-d7be35fabd16.html" target="_blank">Report</a></li>
+        <li><strong>Eloundou et al. / OpenAI + Penn (2023)</strong> &mdash; <em>GPTs are GPTs</em>.
+            80% of US workers have &ge;10% tasks exposed; 19% have &ge;50%.
+            <a href="https://arxiv.org/abs/2303.10130" target="_blank">arXiv:2303.10130</a></li>
+        <li><strong>IMF (2024)</strong> &mdash; Georgieva et al., <em>Gen-AI: AI and the Future of Work</em>.
+            40% of global jobs exposed; 60% in advanced economies.
+            <a href="https://www.imf.org/en/Publications/Staff-Discussion-Notes/Issues/2024/01/14/Gen-AI-Artificial-Intelligence-and-the-Future-of-Work-542379" target="_blank">imf.org</a></li>
+        <li><strong>World Economic Forum (2023)</strong> &mdash; <em>Future of Jobs Report 2023</em>.
+            23% of jobs will change by 2027; 85M displaced, 97M new roles.
+            <a href="https://www.weforum.org/reports/the-future-of-jobs-report-2023/" target="_blank">weforum.org</a></li>
+        <li><strong>Acemoglu &amp; Restrepo (2022)</strong> &mdash; <em>Tasks, Automation, and the Rise in US Wage Inequality</em>. NBER.
+            Automation drove 50&ndash;70% of wage inequality increase.
+            <a href="https://www.nber.org/papers/w28467" target="_blank">NBER w28467</a></li>
+        <li><strong>MIT Work of the Future (2023)</strong> &mdash; <em>Machines and Work</em>.
+            Technology adoption slower than predicted; institutional friction matters.
+            <a href="https://workofthefuture.mit.edu/" target="_blank">workofthefuture.mit.edu</a></li>
+        <li><strong>ARK Invest (2024)</strong> &mdash; <em>Big Ideas 2024</em>.
+            Robotics and autonomous systems deployment timelines.
+            <a href="https://ark-invest.com/big-ideas-2024/" target="_blank">ark-invest.com</a></li>
+    </ol>
+    <p style="margin-top:8px;font-style:italic;opacity:0.7">
+        Timelines shown are ranges synthesised from the above. They represent scenarios, not forecasts.
+        Employment-weighted 80% estimate is computed from category midpoints in this dataset.
+    </p>
 </div>
 
 <div id="loading">Loading occupation dataâ€¦</div>
@@ -356,6 +422,7 @@
     <div class="tt-stats"></div>
     <div class="tt-rationale"></div>
     <div class="tt-robot-note"></div>
+    <div class="tt-timeline"></div>
 </div>
 
 <script>
@@ -399,6 +466,124 @@ const ROBOT_NOTE_TEXT = {
     "healthcare":
         "Robot mode: surgical and physical-care tasks partially reachable; judgment premium remains.",
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Automation timeline estimates per job category
+// Synthesised from: Frey & Osborne 2013, McKinsey 2017/2023, Goldman Sachs 2023,
+// Eloundou et al. 2023 (GPTs are GPTs), IMF 2024, WEF 2023,
+// Acemoglu & Restrepo 2022, MIT Work of Future 2023, ARK Invest 2024.
+// low = optimistic (fast capability + deployment)
+// high = pessimistic (regulatory, social, and technical friction)
+// ─────────────────────────────────────────────────────────────────────────────
+const TIMELINE_DATA = {
+    'computer-and-information-technology': { low:2027, mid:2030, high:2036,
+        basis:'Code-generation AI (Copilot, AlphaCode, Devin) already handles significant workload. Eloundou et al. 2023 classify software among highest-LLM-exposure occupations. Goldman Sachs 2023.' },
+    'math': { low:2028, mid:2032, high:2037,
+        basis:'LLMs pass AMC/AIME benchmarks; AlphaGeometry proves olympiad problems. Goldman Sachs 2023 flags mathematical work as highly automatable. Eloundou et al. 2023.' },
+    'office-and-administrative-support': { low:2026, mid:2029, high:2033,
+        basis:'McKinsey 2017: data processing/collecting 64-69% automatable. Frey & Osborne 2013 give clerical roles >90% automation probability. Goldman Sachs 2023.' },
+    'business-and-financial': { low:2027, mid:2031, high:2037,
+        basis:'Goldman Sachs 2023: finance/business services among top exposed categories. Eloundou et al.: financial analysts, bookkeepers have 50%+ task exposure.' },
+    'media-and-communication': { low:2026, mid:2029, high:2034,
+        basis:'Generative AI produces text, audio, video at scale. LLM journalism tools in production. Frey & Osborne 2013 flag technical writers and editors as high-risk.' },
+    'arts-and-design': { low:2027, mid:2031, high:2037,
+        basis:'Image/video generation AI (DALL-E, Midjourney, Sora) displacing routine design. Creative direction slower to automate. McKinsey 2023, Eloundou et al. 2023.' },
+    'legal': { low:2028, mid:2033, high:2039,
+        basis:'Goldman Sachs 2023: legal professionals face 44% task exposure. AI handles discovery, contract review, drafting; courtroom advocacy and judgment slower. WEF 2023.' },
+    'sales': { low:2029, mid:2034, high:2040,
+        basis:'McKinsey 2017: inside sales 30-40% automatable near-term. Relationship sales slower. AI chatbots already handling high-volume B2C interactions. Frey & Osborne 2013.' },
+    'architecture-and-engineering': { low:2030, mid:2036, high:2043,
+        basis:'AI simulation and generative design advancing rapidly. Safety liability and physical site judgment slow full automation. WEF Future of Jobs 2023, McKinsey 2023.' },
+    'life-physical-and-social-science': { low:2031, mid:2037, high:2044,
+        basis:'AI accelerates literature synthesis and data analysis (AlphaFold). Hypothesis generation and experimental creativity remain human-led. Eloundou et al. 2023.' },
+    'transportation-and-material-moving': { low:2030, mid:2036, high:2044,
+        basis:'SAE Level 4 autonomy approaching; warehouse automation advanced. Long-haul trucking regulatory and edge-case barriers slow full deployment. ARK Invest 2024, McKinsey 2023.' },
+    'production': { low:2030, mid:2037, high:2046,
+        basis:'Industrial robots widespread in structured environments. General-purpose dexterous robots (Figure, Tesla Optimus) targeting unstructured assembly by early 2030s. McKinsey 2017.' },
+    'food-preparation-and-serving': { low:2031, mid:2038, high:2046,
+        basis:'Robotic kitchens (Miso Robotics, Flippy) in early deployment. Full-service automation requires dexterous robots and social capability. McKinsey 2017: 73% task automation potential.' },
+    'building-and-grounds-cleaning': { low:2031, mid:2038, high:2047,
+        basis:'Commercial cleaning robots (BrainOS, Avidbots) deployed in airports/warehouses. Unstructured residential and outdoor environments harder. Frey & Osborne 2013: >90% for janitors.' },
+    'farming-fishing-and-forestry': { low:2030, mid:2038, high:2048,
+        basis:'Precision agriculture and autonomous tractors (John Deere, Monarch) advancing for row crops. Fishing, forestry, specialty crops remain mechanically difficult. McKinsey 2017.' },
+    'installation-maintenance-and-repair': { low:2033, mid:2041, high:2052,
+        basis:'Requires dexterous manipulation in unstructured, variable real-world environments - the core unsolved robotics challenge. Acemoglu & Restrepo 2022, MIT Work of Future 2023.' },
+    'construction-and-extraction': { low:2034, mid:2043, high:2055,
+        basis:'Most physically complex outdoor category. Variable terrain, custom builds, regulatory compliance. BCG 2023: robotics in construction last to scale. MIT Work of Future 2023.' },
+    'management': { low:2032, mid:2039, high:2050,
+        basis:'AI handles scheduling, analytics, reporting. Human judgment for ambiguous decisions, team trust, accountability. WEF 2023: managers augmented before replaced. Acemoglu & Restrepo 2022.' },
+    'education-training-and-library': { low:2033, mid:2041, high:2052,
+        basis:'AI tutors (Khan Academy Khanmigo, Duolingo Max) effective for structured learning. Motivation, mentorship, social development require human educators. IMF 2024, MIT Work of Future 2023.' },
+    'healthcare': { low:2035, mid:2044, high:2057,
+        basis:'Diagnostic AI (FDA-cleared radiology, dermatology) advancing. Physical care, empathy, complex surgery, and ethical judgment slow automation. IMF 2024, Eloundou et al. 2023.' },
+    'personal-care-and-service': { low:2034, mid:2043, high:2055,
+        basis:'Physical assistance robots advancing (Toyota HSR). Human touch and social presence highly valued by care recipients. McKinsey 2023 flags as late-to-automate.' },
+    'protective-service': { low:2034, mid:2043, high:2054,
+        basis:'Security patrol robots deployed. Use of force, de-escalation, and community trust require human accountability. Legal and ethical constraints significant. WEF 2023.' },
+    'community-and-social-service': { low:2038, mid:2048, high:2060,
+        basis:'Empathy, trust, advocacy, and social judgment are the core of these roles. Acemoglu & Restrepo 2022 note strong complementarity with human social skills.' },
+    'entertainment-and-sports': { low:2040, mid:2051, high:2065,
+        basis:'AI generates content but human performance is valued for its own sake. Sports intrinsically require human athletes. MIT Work of Future 2023.' },
+    'military': { low:2038, mid:2049, high:2062,
+        basis:'Autonomous weapons advancing; policy, rules of engagement, accountability, and ethical constraints limit full automation. International law frameworks in flux. WEF 2023.' },
+};
+
+// Timeline color: red (near, ~2025) through yellow (mid, ~2040) to blue (far, ~2065)
+function timelineColorCSS(year, alpha) {
+    if (!year) return 'rgba(128,128,128,' + alpha + ')';
+    const t = Math.max(0, Math.min(1, (year - 2025) / 40));
+    let r, g, b;
+    if (t < 0.33) {
+        const s = t / 0.33;
+        r = Math.round(220 - s * 10); g = Math.round(40 + s * 130); b = Math.round(30 - s * 10);
+    } else if (t < 0.66) {
+        const s = (t - 0.33) / 0.33;
+        r = Math.round(210 - s * 160); g = Math.round(170 - s * 20); b = Math.round(20 + s * 40);
+    } else {
+        const s = (t - 0.66) / 0.34;
+        r = Math.round(50 - s * 20); g = Math.round(150 - s * 80); b = Math.round(60 + s * 150);
+    }
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+// Employment-weighted year when 80% of jobs fall in automated categories
+function compute80Pct() {
+    const catJobs = {};
+    for (const d of rawData) {
+        if (!catJobs[d.category]) catJobs[d.category] = 0;
+        catJobs[d.category] += d.jobs || 0;
+    }
+    const totalJobs = Object.values(catJobs).reduce((s, v) => s + v, 0);
+    const threshold = totalJobs * 0.8;
+    const sorted = Object.entries(catJobs)
+        .map(([cat, jobs]) => ({
+            cat, jobs,
+            mid: TIMELINE_DATA[cat] ? TIMELINE_DATA[cat].mid : 2060,
+            low: TIMELINE_DATA[cat] ? TIMELINE_DATA[cat].low : 2055,
+            high: TIMELINE_DATA[cat] ? TIMELINE_DATA[cat].high : 2065,
+        }))
+        .sort((a, b) => a.mid - b.mid);
+    let cum = 0;
+    for (const item of sorted) {
+        cum += item.jobs;
+        if (cum >= threshold) return { mid: item.mid, low: item.low, high: item.high };
+    }
+    return { mid: 2060, low: 2055, high: 2065 };
+}
+
+function toggleSources() {
+    const el = document.getElementById('sources-detail');
+    const btn = document.querySelector('.src-toggle');
+    const open = el.classList.toggle('open');
+    btn.innerHTML = open ? 'Hide &#9650;' : 'Details &#9660;';
+    // shift canvas/sidebar down when sources panel opens
+    const shift = open ? (38 + el.offsetHeight) : 38;
+    document.getElementById('canvas').style.top = shift + 'px';
+    document.getElementById('sidebar').style.top = shift + 'px';
+    document.getElementById('loading').style.top = shift + 'px';
+    resize();
+}
+
 
 function robotExposure(d) {
     const base = d.exposure ?? 5;
@@ -497,6 +682,7 @@ function worstAspect(row, rowSum, side, totalArea, availExt) {
 // State
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let rawData = [];          // original data from karpathy/jobs
+let colorMode = "exposure"; // "exposure" | "timeline"
 let data = [];             // active data (exposure score depends on robotMode)
 let rects = [];
 let colRects = [];
@@ -531,6 +717,14 @@ const GAP = 1.5;
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Robot mode
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function setColorMode(mode) {
+    colorMode = mode;
+    document.getElementById("btnColorExposure").classList.toggle("active", mode === "exposure");
+    document.getElementById("btnColorTimeline").classList.toggle("active", mode === "timeline");
+    drawGradientLegend();
+    currentView === "treemap" ? draw() : drawColumns();
+}
+
 function setRobotMode(on) {
     robotMode = on;
     document.getElementById("btnNoRobots").classList.toggle("active", !on);
@@ -649,7 +843,10 @@ function draw() {
         const rx = r.rx + g, ry = r.ry + g, rw = r.rw - g*2, rh = r.rh - g*2;
         if (rw <= 0 || rh <= 0) continue;
 
-        ctx.fillStyle = exposureColorCSS(r.exposure, isHovered ? 0.8 : 0.5);
+        const _tl = TIMELINE_DATA[r.category];
+        ctx.fillStyle = colorMode === "timeline" && _tl
+            ? timelineColorCSS(_tl.mid, isHovered ? 0.85 : 0.55)
+            : exposureColorCSS(r.exposure, isHovered ? 0.8 : 0.5);
         ctx.fillRect(rx, ry, rw, rh);
 
         // Draw a subtle orange outline on robot-boosted cells
@@ -821,6 +1018,15 @@ function showTooltip(d, mx, my) {
     `;
     tt.querySelector(".tt-rationale").textContent = d.exposure_rationale || "";
 
+    const timelineEl = tt.querySelector(".tt-timeline");
+    const _ttl = TIMELINE_DATA[d.category];
+    if (_ttl) {
+        timelineEl.innerHTML = "<strong>⏱ Automation timeline</strong> ("
+            + d.category.replace(/-/g," ") + "): "
+            + "<strong style=\"color:#60b8f0\">" + _ttl.low + "–" + _ttl.high + "</strong>"
+            + " (mid-est. <strong style=\"color:#60b8f0\">" + _ttl.mid + "</strong>)<br>"
+            + "<span style=\"opacity:0.8\">" + _ttl.basis + "</span>";
+    } else { timelineEl.textContent = ""; }
     const robotNoteEl = tt.querySelector(".tt-robot-note");
     if (robotMode && d._robotAdjusted) {
         robotNoteEl.textContent =
@@ -880,6 +1086,11 @@ function computeStats() {
     for (const d of active) {
         if (d.exposure != null && d.exposure >= 7 && d.jobs && d.pay) wagesExposed += d.jobs * d.pay;
     }
+
+    const _p80 = compute80Pct();
+    document.getElementById("stat80Pct").textContent = _p80.mid;
+    document.getElementById("stat80Range").textContent =
+        "Optimistic: " + _p80.low + " · Pessimistic: " + _p80.high;
 
     document.getElementById("statTotalJobs").textContent = (totalJobs / 1e6).toFixed(0) + "M";
     document.getElementById("statAvgExposure").innerHTML =
@@ -1003,9 +1214,21 @@ window.addEventListener("resize", resize);
 function drawGradientLegend() {
     const c = document.getElementById("gradientLegend");
     const gc = c.getContext("2d");
-    for (let x = 0; x < 80; x++) {
-        gc.fillStyle = exposureColorCSS((x / 79) * 10, 1);
-        gc.fillRect(x, 0, 1, 8);
+    const spans = document.querySelectorAll(".gradient-legend span");
+    if (colorMode === "timeline") {
+        for (let x = 0; x < 80; x++) {
+            gc.fillStyle = timelineColorCSS(2025 + (x / 79) * 40, 1);
+            gc.fillRect(x, 0, 1, 8);
+        }
+        if (spans[0]) spans[0].textContent = "Sooner";
+        if (spans[1]) spans[1].textContent = "Later";
+    } else {
+        for (let x = 0; x < 80; x++) {
+            gc.fillStyle = exposureColorCSS((x / 79) * 10, 1);
+            gc.fillRect(x, 0, 1, 8);
+        }
+        if (spans[0]) spans[0].textContent = "Low";
+        if (spans[1]) spans[1].textContent = "High";
     }
 }
 
