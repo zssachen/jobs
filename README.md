@@ -49,6 +49,8 @@ The original karpathy/jobs project visualises how exposed every US job title is 
 | **Per-category timeline estimates** | Each category has a low/mid/high automation year derived from the 9 research sources. Visible on hover. |
 | **80% milestone stat** | Employment-weighted calculation: the year by which 80% of all US jobs (by headcount) are predicted to no longer require a human. |
 | **Job search** | Searchable dropdown of all 342 job titles. Keyboard-navigable (Up/Down/Enter/Escape). Selecting a job highlights it on the treemap and shows its score, category, employment count, and timeline. |
+| **Transition Options** | Each selected job shows 3 career-transition links: O\*NET OnLine (find related occupations), CareerOneStop (career pathways & retraining), and the BLS Occupational Outlook Handbook page for that job's category. |
+| **Prospective AI-Related Jobs page** | Separate page ([jobs-future.html](jobs-future.html)) with 14 research-backed emerging roles, tier system (Growing Now / Emerging 2024–30 / Growing 2028–38 / 2030+), job projections, required skills, and 11 cited sources. Optimistic, factual counterpoint to the displacement view. |
 | **Provenance header** | Full data chain displayed across the top of the page with links to all original sources. |
 | **Sources / citations panel** | Collapsible panel listing all 9 research papers with legal/access notes. |
 | **Tooltip** | Hover any treemap cell to see job title, score, employment count, and automation timeline. |
@@ -98,6 +100,7 @@ python3 _build.py
 
 | Version | Date | Notes |
 |---|---|---|
+| v1.5 | 2026-03-15 | Transition Options on job detail panel; new Prospective AI-Related Jobs page (14 roles, 11 sources) |
 | v1.0 | 2026-03-15 | Initial public release — treemap, robot toggle, timeline mode, job search, sources panel, provenance header |
 
 ---
